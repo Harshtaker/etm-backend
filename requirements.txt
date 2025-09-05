@@ -1,7 +1,21 @@
+# Core
 fastapi
 uvicorn[standard]
-SQLAlchemy
+
+# Database
+sqlalchemy
+alembic
 psycopg2-binary
-pydantic
-redis
+
+# Auth & Security
+python-jose[cryptography]
+passlib[bcrypt]
 python-dotenv
+
+# Utils
+pydantic
+
+# Testing
+pytest
+pytest-asyncio
+httpx

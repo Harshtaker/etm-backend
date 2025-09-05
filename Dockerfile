@@ -1,20 +1,25 @@
-FROM python:3.10-slim
+# Use slim Python base
+FROM python:3.11-slim
 
-# Set work directory
-WORKDIR /code
+# Set working directory
+WORKDIR /app
 
-# Install dependencies
+# Install system deps
+RUN apt-get update && apt-get install -y build-essential libpq-dev && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install postgres client for wait-for-db.sh
-RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
-
-# Copy code
+# Copy app code
 COPY . .
 
-# Make wait-for-db.sh executable
-RUN chmod +x wait-for-db.sh
+# Run as non-root user (security)
+RUN useradd -m appuser
+USER appuser
 
-# Default command (will be overridden by docker-compose entrypoint)
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Expose port
+EXPOSE 8000
+
+# Start app
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
