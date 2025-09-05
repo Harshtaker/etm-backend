@@ -15,3 +15,12 @@ app = FastAPI()
 @app.get("/healthz")
 def health():
     return {"status": "ok"}
+from fastapi import FastAPI
+from app.routes.buses import router as bus_router
+
+app = FastAPI()
+
+app.include_router(bus_router)
+from app.routes.users import router as user_router
+
+app.include_router(user_router)
