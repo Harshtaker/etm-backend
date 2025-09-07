@@ -1,13 +1,13 @@
 from pydantic import BaseModel, ConfigDict
 
-class UserBase(BaseModel):
+class DriverBase(BaseModel):
     name: str
-    email: str
+    license_number: str
 
-class UserCreate(UserBase):
-    password: str
+class DriverCreate(DriverBase):
+    pass
 
-class User(UserBase):
+class Driver(DriverBase):
     id: int
 
     model_config = ConfigDict(from_attributes=True)

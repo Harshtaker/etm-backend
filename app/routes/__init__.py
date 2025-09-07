@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.services import SessionLocal, redis_client
 from app.models import Bus
-from app.schemas import BusCreate, BusResponse, BusLocationUpdate
+from app.schemas.bus import BusCreate, BusResponse, BusLocationUpdate
 import json
 
 router = APIRouter()

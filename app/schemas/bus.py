@@ -1,10 +1,13 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 class BusCreate(BaseModel):
-    name: str
-    capacity: int
+    bus_number: str
+    latitude: float
+    longitude: float
 
-class BusRead(BusCreate):
+class BusResponse(BusCreate):   # 👈 Make sure this exists
     id: int
 
-    model_config = ConfigDict(from_attributes=True)  # Pydantic v2
+class BusLocationUpdate(BaseModel):
+    latitude: float
+    longitude: float
