@@ -3,7 +3,7 @@ from app.main import app
 
 client = TestClient(app)
 
-def test_health():
-    response = client.get("/healthz")
+def test_root():
+    response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    assert response.json() == {"message": "Welcome to ETM Bus Tracking API 🚍"}

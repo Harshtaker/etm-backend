@@ -1,9 +1,8 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 class FeedbackBase(BaseModel):
     user_id: int
     bus_id: int
-    rating: int
     comment: str
 
 class FeedbackCreate(FeedbackBase):
@@ -12,4 +11,5 @@ class FeedbackCreate(FeedbackBase):
 class Feedback(FeedbackBase):
     id: int
 
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        orm_mode = True

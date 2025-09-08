@@ -1,32 +1,28 @@
 from fastapi import FastAPI
-from app.database import Base, engine
-from app.routes import users, buses, tickets, drivers, feedback # make sure file is feedbacks.py
+from app.database import engine, Base
+from app.routes import buses_router, drivers_router, users_router, feedback_router, tracking_router
+from app.routes.bus_stops import router as bus_stops_router
 
-# Create DB tables
+# Initialize FastAPI app
+app = FastAPI(title="ETM Bus Tracking API 🚍")
+
+# Create all tables in the database
 Base.metadata.create_all(bind=engine)
 
-# Create FastAPI app with metadata
-app = FastAPI(
-    title="ETM Backend 🚍",
-    description="Backend service for Electronic Ticketing Machines (ETM).",
-    version="1.0.0"
-)
+# Include all routers
+app.include_router(buses_router)
+app.include_router(drivers_router)
+app.include_router(users_router)
+app.include_router(feedback_router)
+app.include_router(tracking_router)
+app.include_router(bus_stops_router)  # <-- include after app is created
 
-# Include routers with prefixes and tags
-app.include_router(users.router, prefix="/users", tags=["Users"])
-app.include_router(buses.router, prefix="/buses", tags=["Buses"])
-app.include_router(tickets.router, prefix="/tickets", tags=["Tickets"])
-app.include_router(drivers.router, prefix="/drivers", tags=["Drivers"])
-app.include_router(feedback.router, prefix="/feedbacks", tags=["Feedbacks"])
+# Health check
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "message": "ETM Bus Tracking API is running!"}
 
 # Root endpoint
-@app.get("/", tags=["System"], summary="Root")
+@app.get("/")
 def root():
-    """Root endpoint to check if backend is running."""
-    return {"message": "ETM Backend is running 🚍"}
-
-# Health check endpoint
-@app.get("/healthz", tags=["System"], summary="Health Check")
-def health():
-    """Health check endpoint for uptime monitoring."""
-    return {"status": "ok"}
+    return {"message": "Welcome to ETM Bus Tracking API 🚍"}

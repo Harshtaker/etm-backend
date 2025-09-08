@@ -1,8 +1,9 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 class DriverBase(BaseModel):
     name: str
     license_number: str
+    phone: str | None = None
 
 class DriverCreate(DriverBase):
     pass
@@ -10,4 +11,5 @@ class DriverCreate(DriverBase):
 class Driver(DriverBase):
     id: int
 
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        orm_mode = True
